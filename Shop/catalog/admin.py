@@ -1,6 +1,8 @@
 from django.contrib import admin
+from django.utils.html import format_html
+
 from .models import Component
-from django.utils.html import format_html, mark_safe
+
 
 # Register your models here.
 
