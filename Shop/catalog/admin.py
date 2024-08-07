@@ -9,8 +9,8 @@ from .models import Component
 
 @admin.register(Component)
 class ComponentAdmin(admin.ModelAdmin):
-    list_display = ('name', 'description', 'price', 'show_photo', 'date_created')
-    fields = ['name', 'description', 'category', ('price', 'photo', 'date_created', 'show_photo')]
+    list_display = ('name', 'description', 'date_created', 'price', 'show_photo' )
+    fields = ['name', 'description', 'date_created', 'category', ('price', 'photo', 'show_photo')]
     readonly_fields = ["show_photo"]
 
     def show_photo(self, obj):

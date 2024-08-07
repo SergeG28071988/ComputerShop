@@ -7,6 +7,7 @@ class Component(models.Model):
     objects = None
     name = models.CharField(max_length=100, help_text="Введите товар", verbose_name="Товар")
     description = models.TextField(help_text="Введите описание товара", verbose_name="Описание товара")
+    date_created = models.DateField(help_text='Введите дату добавления', verbose_name='Дата добавления')
     CATEGORY_CHOICES = [
         ('Процессоры', 'Процессоры'),
         ('Материнские платы', 'Материнские платы'),
@@ -24,7 +25,7 @@ class Component(models.Model):
                               help_text="Введите фото",
                               verbose_name="Фото товара",
                               null=True, blank=True)
-    date_created = models.DateField(help_text='Введите дату добавления', verbose_name='Дата добавления')
+
 
     def __str__(self):
         return f'Наименование: {self.name} Описание: {self.description}'
