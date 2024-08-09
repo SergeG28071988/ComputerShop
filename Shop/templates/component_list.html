@@ -1,10 +1,58 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+<!-- component_list.html -->
 
-</body>
-</html>
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<br>
+    <div class="button-group">
+        <a href="{% url 'add_component' %}" class="btn btn-warning btn-sm" role="button"> +</a>
+        <a href="{% url 'price_statistics' %}" class="btn btn-primary btn-end" role="button">К статистике цен</a>
+        <a href="{% url 'print_components' %}" class="btn btn-info btn-sm" onclick="window.print();">Печать</a>
+    </div>
+<br><br>
+    <h4> {{ header }}</h4>
+    <!-- Форма поиска по наименованию клиента -->
+    <form action="{% url 'search_components' %}" method="GET">
+        <input type="text" name="name" placeholder="Search by name">
+        <div class="button-container">
+            <button type="submit" class="btn btn-primary" name="button">Поиск комплектующих</button>
+            <a href="{% url 'component_list' %}" class="btn btn-secondary" role="button">Перезагрузка</a>
+        </div>
+    </form>
+    <div class="row text-center text-dark lh-2">
+        <h4>Список комплектующих в БД</h4>
+    </div>
+    {% if components %}
+    <table class="table table-success table-hover table-striped table-bordered text-start">
+            <thead>
+                <tr>
+                    <th>Наименование</th>
+                    <th>Описание</th>
+                    <th>Дата добавления</th>
+                    <th>Категория</th>
+                    <th>Цена</th>
+                    <th>Показать фото</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for el in components %}
+                    <tr>
+                       <td>{{ el.name }}</td>
+                        <td>{{ el.description }}</td>
+                        <td>{{ el.date_created }}</td>
+                        <td>{{ el.category }}</td>
+                        <td>{{ el.price }}</td>
+                        <td><img src="{{ el.photo.url }}" alt="connect"
+                                 style="max-height:100px"></td>
+                        <td><a href="{{ el.photo.url}}"
+                               class="btn btn-primary"
+                               target="_blank"> Показать</a></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+      <p>В базе данных нет комплектующих </p>
+    {% endif %}
+{% endblock %}

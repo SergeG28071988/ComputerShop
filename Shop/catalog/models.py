@@ -26,7 +26,6 @@ class Component(models.Model):
                               verbose_name="Фото товара",
                               null=True, blank=True)
 
-
     def __str__(self):
         return f'Наименование: {self.name} Описание: {self.description}'
 

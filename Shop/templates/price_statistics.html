@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}Статистика цен{% endblock %}
+
+{% block content %}
+    <h1>{{ header }}</h1>
+<br>
+     <form method="GET" action="{% url 'price_statistics' %}">
+        <input type="text" name="name" placeholder="Введите название товара" required>
+         <div class="button-container">
+            <button type="submit" class="btn btn-primary" name="button">Поиск комплектующих</button>
+             <a href="{% url 'component_list' %}" class="btn btn-warning btn-sm" role="button">Назад к комплектующим</a>
+             <a href="{% url 'price_statistics' %}" class="btn btn-secondary" role="button">Перезагрузка</a>
+        </div>
+    </form>
+    <img src="data:image/png;base64,{{ graph_base64 }}" alt="График цен">
+
+    {% if components %}
+        <h2>Найденные товары:</h2>
+        <div class="card-container">
+            {% for component in components %}
+                <div class="card">
+                    <div class="card-header">
+                        <h3>{{ component.name }}</h3>
+                    </div>
+                    <div class="card-body">
+                        <p>Цена: {{ component.price }} руб.</p>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>Товары не найдены.</p>
+    {% endif %}
+{% endblock %}

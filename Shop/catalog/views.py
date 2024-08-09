@@ -38,8 +38,51 @@ def plot_component_prices(components):
 
 
 def components(request):
-    return render(request, 'component_list.html')
+    components = Component.objects.all()
+    context = {
+        'components': components,
+    }
+    return render(request, 'component_list.html', context)
 
 
 def add_component(request):
-    return render(request, 'add_component.html')
+    if request.method == 'POST':
+        form = ComponentForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('component_list')
+    else:
+        form = ComponentForm()
+    return render(request, 'add_component.html', {'form': form})
+
+
+def price_statistics(request):
+    name = request.GET.get('name')
+    components = Component.objects.all()
+
+    if name:
+        components = components.filter(name__icontains=name)
+
+    graph_base64 = plot_component_prices(components)
+    context = {
+        'graph_base64': graph_base64,
+        'components': components,
+        'header': f"Статистика цен для '{name}'" if name else "Статистика цен на товары"
+    }
+    return render(request, 'price_statistics.html', context)
+
+
+def search_components(request):
+    name = request.GET.get('name')
+    components = Component.objects.filter(name__icontains=name)
+    header = f"Найден товар '{name}'"
+    context = {
+        'components': components,
+        'header': header
+    }
+    return render(request, 'component_list.html', context)
+
+
+def print_components(request):
+    components = Component.objects.all()
+    return render(request, 'component_list.html', {'components': components})
